@@ -1,5 +1,128 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	h1= title
+	p Welcome to #{title}
+
+	p Esto es una maqueta de un posible flujo de implementación. La idea es aclarar lo que tenemos en mente cada uno para poder acordar lo que se debe hacer.
+
+
+	form
+		h3 Paso 1: seleccione especialidad
+
+		p Al principio sólo se vería este seleccionador, pues para llenar las opciones de los médicos es necesario contar primero con la especialidad seleccionada. Pero aquí pongo todo junto para que veas el flujo completo (y porque quiero hacer algo rapidín para que veas).
+
+		label Especialidad 
+		select
+			option Pediatría
+			option Odontología
+			option Gastronenterología
+
+
+		h3 Paso 2: seleccione especialista
+
+		p Se me ocurre que en vez de ser un simple seleccionador como el presentado aquí, podría ser una lista más elaborada, con un pequeño párrafo descriptivo del especialista y su foto, y hasta quizás un enlace a mayor información por si el paciente desea profundizar antes de elegir uno. Lo dejo a tu criterio. Por ahora podemos salir andando con un menú de selección como el que se ve acá.
+
+		label Especialistas 
+		select
+			option Pepe Hongo
+			option Marianella Tongarella
+			option Charly García
+
+
+		h3 Paso 3: seleccione día
+
+		p Un calendario que tenga deshabilitados los días no laborables y también aquellos en los que el doctor no trabaja, y que tenga una codificación con colores como la siguiente:
+
+		ul
+			li gris deshabilitado
+			li verde habilitado, completamente vacío
+			li amarillo habilitado, algunos turnos tomados
+			li naranja habilitado, quedan pocos turnos (<= 3)
+			li rojo completamente tomado, no se pueden tomar más turnos
+
+
+		p Una consideración que se me acaba de ocurrir justo ahora: estoy basando la selección de turno en el especialista, pero que tal si al paciente le importa poco quién lo atienda? Qué tal si lo único que le interesa es tener el turno más cercano posible? En ese caso se me ocurre que podríamos intercalar un 
+			strong paso 1.5 
+			span que pregunte: 
+			em "Desea elegir por 
+				a(href="#") especialista
+				span &nbsp;o por 
+				a(href="#") día disponible
+			span ?" y en base a la respuesta intercalar los pasos 2 y 3
+
+
+		h3 Paso 4: seleccione horario
+
+		p Se me ocurre que debería programar una sección privada de administración para que cada doctor ingrese y programe sus propios horarios y módulos. Pero dado que aún no me has respondido las preguntas que te hice más temprano, no nos vamos a complicar por ahora y pondremos todos los módulos de 30 minutos.
+
+		ul
+			li
+				strong 0900
+			li
+				strong 0930
+			li
+				strong 1000
+			li
+				strong ...
+			li
+				strong 1730
+
+		p Cada módulo de esta lista estará codificado también por color (serán rectangulitos coloreados):
+		ul
+			li gris deshabilitado
+			li verde disponible
+			li rojo tomado
+
+		h3 Paso 5: seleccione tipo de recordatorio
+
+		p Acá llegué a dos posibles escenarios:
+
+		ol
+			li Obligar a que se confirmen los turnos o se revocan
+			li Optar por la buena voluntad y educación de los pacientes
+
+		p Imagino que lo que vos vas a querer implementar será la primera opción, pero se me ocurren algunos posibles problemas:
+		ul
+			li Qué pasa si la mayoría de los pacientes no confirma, se otorgan nuevos turnos e igual te caen a la consulta? -> Quilombo!
+			li Qué pasa si alguno no confirma, pero el turno no es tomado por otro paciente y luego el primero cae igualmente a la consulta? Lo vas a atender, verdad? Pues al final el turno no se tomó. -> Sistema de turnos al pedo, la gente sigue siendo mal educada, pues se la juega, no importa.
+			li Al _requerir_ que confirmen te estás apoyando en la estructura de poder que te da el sistema informático para imponer condiciones draconianas y, básicamente romperle las pelotas a los pacientes. Porque siempre que sean las pelotas de otro las que rompanos, qué importa, no?
+
+		p A mi me gusta más el segundo escenario. Entiendo que tal vez no sea la idea que tenías en mente, pero creo que lo podemos conversar y encontrar un punto medio. O inclusive implementar ambas soluciones. Pero no la quiero complicar de entrada.
+
+		p Con la segunda manera lo que hacemos es dejar que el paciente elija cómo quiere ser _recordado_ de que tiene un turno y la cantidad de avisos previos.
+
+		p Luego en el mensaje, además del recordatorio, proveemos un mensaje diciendo algo como "Si _no_ va a poder asistir, por favor sea tan amable de seguir este enlace y dar de baja su turno para que otro paciente lo pueda tomar. Gracias."
+
+		p Entonces el paso 5 quedaría así:
+
+		h4 Recordarme mediante...
+		ul
+			li
+				input(type="checkbox" checked)
+				Email
+			li
+				input(type="checkbox")
+				SMS
+			li
+				input(type="checkbox")
+				WhatsApp
+			li
+				input(type="checkbox")
+				Llamada pre-grabada
+
+
+		h4 Recordarme...
+
+		ul
+			li
+				input(type="checkbox" checked)
+				span 2 horas antes
+			li
+				input(type="checkbox" checked)
+				span 1 semana antes
+			li
+				input(type="checkbox" checked)
+				span 1 mes antes
+
+		p La aparición de el segundo conjunto de checkboxes estaría supeditada a que la _anticipación_ con que se sacó el turno sobrepase los valores apropiados para cada checkbox.

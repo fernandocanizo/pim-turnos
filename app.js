@@ -1,3 +1,9 @@
+// Creation Date: 2015.06.03
+// Author: Fernando L. Canizo - http://flc.muriandre.com/
+
+"use strict";
+
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
